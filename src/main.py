@@ -19,10 +19,4 @@ if __name__ == "__main__":
 
         SCREEN.render()
 
-        CELLS = 10 # CELLSxCELLS amount
-
-        for y in range(CELLS):
-            for x in range(CELLS):
-                cell = pygame.Rect(x * (SCREEN.width / CELLS), y * (SCREEN.height / CELLS))
-
         pygame.display.flip()
