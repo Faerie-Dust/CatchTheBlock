@@ -8,7 +8,7 @@ ASSETS_PATH = Path(__file__).parent.parent.joinpath("assets")
 
 if __name__ == "__main__":
     pygame.init()
-    screen = pygame.display.set_mode((854, 480), RESIZABLE) # intentionally not holding a reference here
+    pygame.display.set_mode((854, 480), RESIZABLE) # intentionally not holding a reference here
 
     screen = GameScreen(*pygame.display.get_window_size())
     platform = pygame.transform.smoothscale_by(pygame.image.load(Path(ASSETS_PATH, "platform.png")), 4 / 5)
