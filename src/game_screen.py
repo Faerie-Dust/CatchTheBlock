@@ -19,6 +19,7 @@ class GameScreen:
         self.left = self._rect.left
         self.width = self._rect.width
         self.height = self._rect.height
+        self.bottom = self._rect.bottom
 
     def render(self):
         screen = pygame.display.get_surface()
