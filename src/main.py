@@ -9,9 +9,6 @@ if __name__ == "__main__":
 
     screen = GameScreen(*pygame.display.get_window_size())
 
-    block_width = screen.width / 4
-    block_height = screen.height / 20 # 20 blocks
-
     while True:
         for event in pygame.event.get():
             if event.type == QUIT:
@@ -19,8 +16,6 @@ if __name__ == "__main__":
 
             if event.type == VIDEORESIZE: # called initially as well
                 screen = GameScreen(*event.size)
-                block_width = screen.width / 4
-                block_height = screen.height / 20 # 20 blocks
 
         screen.render()
 

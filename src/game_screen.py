@@ -1,13 +1,15 @@
 import pygame
+from block2 import Block
 from pathlib import Path
 from pygame.locals import *
-from pathlib import Path
 
 class GameScreen:
     _ASSETS_PATH = Path(__file__).parent.parent.joinpath("assets")
 
     _OUTER_COLOR = (96, 96, 96)
     _INNER_COLOR = (48, 48, 48)
+
+    _BLOCKS = []
 
     def __init__(self, width: int, height: int):
         length = min(width, height)
@@ -17,15 +19,7 @@ class GameScreen:
         pos_y = 0 if length == height else (height - length) / 2
 
         self._rect = pygame.Rect(pos_x, pos_y, length, length)
-        self.platform = pygame.transform.smoothscale_by(pygame.image.load(Path(GameScreen._ASSETS_PATH, "platform.png")), 4 / 5)
-
-        # expose for usage outside the class TODO: remove necessity
-        self.top = self._rect.top
-        self.left = self._rect.left
-        self.width = self._rect.width
-        self.height = self._rect.height
-        self.bottom = self._rect.bottom
-        self.centerx = self._rect.centerx
+        self._platform = pygame.transform.smoothscale_by(pygame.image.load(Path(GameScreen._ASSETS_PATH, "platform.png")), 4 / 5)
 
     def render(self):
         screen = pygame.display.get_surface()
@@ -33,4 +27,15 @@ class GameScreen:
         screen.fill(GameScreen._OUTER_COLOR)
         pygame.draw.rect(screen, GameScreen._INNER_COLOR, self._rect)
 
-        platform_rect = screen.blit(self.platform, (self._rect.centerx - self.platform.get_width() / 2, self._rect.bottom - self.platform.get_height() - 5))
+        platform_rect = screen.blit(self._platform, (self._rect.centerx - self._platform.get_width() / 2, self._rect.bottom - self._platform.get_height() - 5))
+
+        if len(GameScreen._BLOCKS) == 0 or not GameScreen._BLOCKS[-1].is_alive():
+            GameScreen._BLOCKS.append(Block(GameScreen._ASSETS_PATH, self._rect))
+
+        keys = pygame.key.get_pressed()
+
+        if keys[K_SPACE]:
+            GameScreen._BLOCKS[-1].stop_motion() # stop the most recent block and make it fall
+
+        for block in GameScreen._BLOCKS:
+            block.render(platform_rect.top - (len(GameScreen._BLOCKS) - 1) * Block.IMAGE.get_height())
