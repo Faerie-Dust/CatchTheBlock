@@ -1,17 +1,16 @@
-from pathlib import Path
 from game_screen import GameScreen
 
 import pygame
 from pygame.locals import *
-
-ASSETS_PATH = Path(__file__).parent.parent.joinpath("assets")
 
 if __name__ == "__main__":
     pygame.init()
     pygame.display.set_mode((854, 480), RESIZABLE) # intentionally not holding a reference here
 
     screen = GameScreen(*pygame.display.get_window_size())
-    platform = pygame.transform.smoothscale_by(pygame.image.load(Path(ASSETS_PATH, "platform.png")), 4 / 5)
+
+    block_width = screen.width / 4
+    block_height = screen.height / 20 # 20 blocks
 
     while True:
         for event in pygame.event.get():
@@ -20,9 +19,11 @@ if __name__ == "__main__":
 
             if event.type == VIDEORESIZE: # called initially as well
                 screen = GameScreen(*event.size)
+                block_width = screen.width / 4
+                block_height = screen.height / 20 # 20 blocks
 
         screen.render()
 
-        pygame.display.get_surface().blit(platform, ((screen.width - platform.get_width()) / 2, screen.bottom - platform.get_height() - 5))
+        #pygame.draw.rect(pygame.display.get_surface(), (255, 255, 255), pygame.Rect(platform_rect.centerx - block_width / 2, platform_rect.top - block_height, block_width, block_height))
 
         pygame.display.flip()
